@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Pra Você 💘</title>
+  <style>
+    :root {
+      --bg:#0f1724;
+      --card:#0b1220aa;
+      --accent:#ff6b81;
+      --text:#f4f7fb;
+      --muted:#bfc9d9;
+    }
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: linear-gradient(180deg, #071227 0%, #081428 60%);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      overflow: hidden;
+      flex-direction: column;
+    }
+    .card {
+      width: 100%;
+      max-width: 880px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius: 18px;
+      box-shadow: 0 10px 40px rgba(2,6,23,0.7);
+      padding: 22px;
+      position: relative;
+      z-index: 2;
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255,255,255,0.04);
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .top {
+      display: flex;
+      gap: 18px;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      overflow: hidden;
+      flex: 0 0 120px;
+      border: 4px solid rgba(255,255,255,0.06);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.6);
+      transition: box-shadow 1.5s ease;
+    }
+    .avatar.glow {
+      box-shadow:
+        0 0 15px 5px var(--accent),
+        0 0 30px 10px var(--accent);
+    }
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    h1 {
+      margin: 0;
+      font-size: 1.6rem;
+      letter-spacing: 0.2px;
+    }
+    p.lead {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 1rem;
+      min-height: 48px; /* pra evitar pular conteúdo */
+    }
+    .controls {
+      margin-top: 14px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .btn {
+      background: linear-gradient(90deg, var(--accent), #ff9aa8);
+      color: white;
+      padding: 10px 16px;
+      border-radius: 12px;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(255,107,129,0.15);
+      user-select: none;
+      transition: background-color 0.3s ease;
+    }
+    .btn:hover {
+      background: linear-gradient(90deg, #ff9aa8, var(--accent));
+    }
+    .btn.ghost {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.06);
+      color: var(--text);
+      padding: 8px 12px;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      user-select: none;
+      transition: background-color 0.3s ease;
+    }
+    .btn.ghost:hover {
+      background: rgba(255,255,255,0.05);
+    }
+
+    #hearts {
+      position: fixed;
+      pointer-events: none;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: visible;
+      z-index: 1;
+    }
+    .heart {
+      position: absolute;
+      top: -40px;
+      pointer-events: none;
+      will-change: transform, opacity;
+      filter: drop-shadow(0 6px 12px rgba(0,0,0,0.45));
+      user-select: none;
+      opacity: 0;
+      animation: fall 5s linear forwards;
+    }
+    .heart svg {
+      display: block;
+    }
+
+    @keyframes fall {
+      0% {
+        opacity: 1;
+        transform: translateY(0) scale(1) rotate(0deg);
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(110vh) scale(1) rotate(360deg);
+      }
+    }
+
+    @media (max-width:520px){
+      .top {
+        gap: 12px;
+      }
+      .avatar {
+        width: 96px;
+        height: 96px;
+        flex: 0 0 96px;
+      }
+      h1 {
+        font-size: 1.25rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <main class="card" role="main" aria-label="Página do amor">
+    <div class="top">
+      <div class="avatar" id="avatar">
+        <img id="photo" src="Imagem do WhatsApp de 2025-08-11 à(s) 19.10.57_15b4bbbc.jpg" alt="Foto nossa">
+      </div>
+
+      <div class="intro">
+        <h1>Pra você, meu amor ❤️</h1>
+        <p class="lead" id="leadText">Você é meu lugar favorito no mundo — e essa página é só um pedacinho do quanto eu gosto de você.</p>
+
+        <div class="controls">
+          <button id="surpriseBtn" class="btn">Surpresa 🎵</button>
+          <button id="nextPhrase" class="btn ghost">Próxima frase</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div id="hearts"></div>
+
+  <script>
+    const MESSAGES = [
+      "Eu gosto do seu sorriso. Gosto do seu jeito.",
+      "É com você que eu quero contar as coisas bobas e as importantes.",
+      "Obrigado por ser minha paz e minha risada.",
+      "Se eu pudesse colocar em código o quanto eu gosto de você, faria um loop infinito.",
+      "Você é a melhor parte dos meus dias, mesmo quando são difíceis.",
+      "Com você, cada momento vira uma memória especial.",
+      "Seu jeito simples ilumina tudo ao meu redor.",
+      "Não é só amor, é respeito, cumplicidade e parceria.",
+      "Você me inspira a ser uma pessoa melhor a cada dia.",
+      "Juntos, qualquer problema vira só mais um detalhe.",
+      "A gente tem um tipo de sintonia que é raro de encontrar.",
+      "Você é o motivo do meu sorriso bobo e do coração acelerado."
+    ];
+    const START_LEAD = "Você é meu lugar favorito no mundo — e essa página é só um pedacinho do quanto eu gosto de você.";
+
+    const heartsRoot = document.getElementById('hearts');
+    const leadText = document.getElementById('leadText');
+    const surpriseBtn = document.getElementById('surpriseBtn');
+    const nextBtn = document.getElementById('nextPhrase');
+    const avatar = document.getElementById('avatar');
+
+    function rand(min, max) {
+      return Math.random() * (max - min) + min;
+    }
+
+    function spawnHeart() {
+      const el = document.createElement('div');
+      el.className = 'heart';
+      const size = Math.floor(rand(18, 38));
+      el.style.left = rand(5, 95) + 'vw';
+      el.style.width = size + 'px';
+      el.style.height = size + 'px';
+      el.style.opacity = '1';
+      el.style.animationDuration = (rand(4, 7)) + 's';
+
+      el.innerHTML = `
+        <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" >
+          <path d="M12 21s-7.5-4.7-9.2-7.2C0.8 11.3 2 6 6 4.7 8.1 3.9 10.3 5 12 6.6c1.7-1.6 3.9-2.7 6-1.9 4 1.3 5.2 6.6 3.2 9.1C19.5 16.3 12 21 12 21z" fill="#ff6b81"/>
+        </svg>`;
+
+      heartsRoot.appendChild(el);
+
+      setTimeout(() => {
+        el.remove();
+      }, 7000);
+    }
+
+    let heartsInterval;
+
+    function startHearts() {
+      if(heartsInterval) clearInterval(heartsInterval);
+      heartsInterval = setInterval(spawnHeart, 700);
+      for (let i = 0; i < 5; i++) setTimeout(spawnHeart, i * 350);
+    }
+
+    surpriseBtn.addEventListener('click', () => {
+      // Troca frase aleatória na mensagem principal
+      const msg = MESSAGES[Math.floor(Math.random() * MESSAGES.length)];
+      leadText.textContent = msg;
+
+      // Aplica efeito de brilho na foto
+      avatar.classList.add('glow');
+      setTimeout(() => avatar.classList.remove('glow'), 1500);
+
+      // Começa os corações caindo
+      startHearts();
+    });
+
+    nextBtn.addEventListener('click', () => {
+      // Próxima frase sequencial
+      let currentIndex = MESSAGES.indexOf(leadText.textContent);
+      let nextIndex = (currentIndex + 1) % MESSAGES.length;
+      leadText.textContent = MESSAGES[nextIndex];
+    });
+
+    // Reset texto no duplo clique na foto
+    document.getElementById('photo').addEventListener('dblclick', () => {
+      leadText.textContent = START_LEAD;
+    });
+
+  </script>
+</body>
+</html>
